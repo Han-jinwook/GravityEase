@@ -1,3 +1,5 @@
+console.log('test-insert.ts loaded');
+
 import { supabase } from '../supabase'
 
 async function testInsert() {
