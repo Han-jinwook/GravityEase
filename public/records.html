@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>기록 - 중력이완요법</title>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#2563eb">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .back-btn {
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .back-btn:hover {
+            background: #5856eb;
+        }
+        
+        .back-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1f2937;
+            flex: 1;
+            text-align: center;
+        }
+        
+        .records-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+        }
+        
+        .error {
+            text-align: center;
+            padding: 40px;
+            color: #ef4444;
+        }
+        
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+        }
+        
+        .session-header {
+            display: grid;
+            grid-template-columns: 1.8fr 1fr 1fr 1fr;
+            gap: 8px;
+            padding: 12px 10px;
+            background: #f8fafc;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            font-weight: 600;
+            font-size: 13px;
+            color: #374151;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .session-row {
+            display: grid;
+            grid-template-columns: 1.8fr 1fr 1fr 1fr;
+            gap: 8px;
+            padding: 15px 10px;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+            align-items: center;
+        }
+        
+        .session-row:hover {
+            background: #f9fafb;
+            border-color: #6366f1;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
+        }
+        
+        .session-row.expanded {
+            border-color: #6366f1;
+            background: #f8faff;
+        }
+        
+        .session-date {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .expand-icon {
+            width: 14px;
+            height: 14px;
+            transition: transform 0.3s;
+            color: #6b7280;
+        }
+        
+        .expand-icon.expanded {
+            transform: rotate(90deg);
+        }
+        
+        .session-value {
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .session-value.angle {
+            color: #2563eb;
+            font-weight: 600;
+        }
+        
+        .session-value.duration {
+            color: #374151;
+        }
+        
+        .session-value.count {
+            color: #6b7280;
+        }
+        
+        .session-details {
+            grid-column: 1 / -1;
+            margin-top: 15px;
+            padding: 15px;
+            background: #f1f5f9;
+            border-radius: 8px;
+            border-left: 4px solid #6366f1;
+        }
+        
+        .detail-header {
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+        
+        .detail-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            align-items: center;
+            padding: 8px 10px;
+            background: white;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+        
+        .detail-time {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+        }
+        
+        .detail-angle {
+            color: #2563eb;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .detail-duration {
+            color: #6b7280;
+            text-align: right;
+        }
+        
+
+        
+        @media (max-width: 640px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header {
+                gap: 10px;
+                padding: 15px;
+            }
+            
+            .title {
+                font-size: 18px;
+            }
+            
+            .records-card {
+                padding: 15px;
+            }
+            
+            .session-header {
+                grid-template-columns: 1.5fr 1fr 1fr 0.8fr;
+                gap: 8px;
+                padding: 10px 12px;
+                font-size: 11px;
+            }
+            
+            .session-row {
+                grid-template-columns: 1.5fr 1fr 1fr 0.8fr;
+                gap: 8px;
+                padding: 12px;
+            }
+            
+            .session-date {
+                font-size: 13px;
+            }
+            
+            .session-value {
+                font-size: 12px;
+            }
+            
+            .session-details {
+                margin-top: 10px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <button class="back-btn" onclick="goBack()">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+            </button>
+            <h1 class="title">중력이완요법 날짜별 세션</h1>
+        </div>
+        
+        <div class="records-card">
+            <div id="loading" class="loading">
+                기록을 불러오는 중...
+            </div>
+            
+            <div id="error" class="error" style="display: none;">
+                기록을 불러오는 중 오류가 발생했습니다.
+            </div>
+            
+            <div id="no-data" class="no-data" style="display: none;">
+                아직 기록된 세션이 없습니다.
+            </div>
+            
+            <div id="records-content" style="display: none;">
+                <div class="session-header">
+                    <div>날짜/시작시간</div>
+                    <div style="text-align: center; white-space: nowrap;">실사용 평균각도</div>
+                    <div style="text-align: center;">총 세션 시간</div>
+                    <div style="text-align: center;">세션 수</div>
+                </div>
+                <div id="sessions-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let expandedSessions = new Set();
+        
+        function goBack() {
+            window.location.href = '/';
+        }
+        
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            return `${minutes}분 ${remainingSeconds}초`;
+        }
+        
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            const year = date.getFullYear().toString().slice(-2);
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const day = date.getDate().toString().padStart(2, '0');
+            return `${year}/${month}/${day}`;
+        }
+        
+        function formatTime24(timeStr) {
+            if (!timeStr) return '--:--';
+            const [hours, minutes] = timeStr.split(':');
+            return `${hours}:${minutes}`;
+        }
+        
+        async function toggleSession(sessionDate) {
+            const sessionRow = document.querySelector(`[data-session="${sessionDate}"]`);
+            const expandIcon = sessionRow.querySelector('.expand-icon');
+            const detailsContainer = sessionRow.querySelector('.session-details');
+            
+            if (expandedSessions.has(sessionDate)) {
+                // Collapse
+                expandedSessions.delete(sessionDate);
+                sessionRow.classList.remove('expanded');
+                expandIcon.classList.remove('expanded');
+                if (detailsContainer) {
+                    detailsContainer.remove();
+                }
+            } else {
+                // Expand
+                expandedSessions.add(sessionDate);
+                sessionRow.classList.add('expanded');
+                expandIcon.classList.add('expanded');
+                
+                // Load details
+                try {
+                    const response = await fetch(`/api/records/details/${sessionDate}`);
+                    if (response.ok) {
+                        const records = await response.json();
+                        
+                        const detailsHtml = `
+                            <div class="session-details">
+                                <div class="detail-header">세부 세션</div>
+                                ${records.length === 0 ? 
+                                    '<div style="color: #6b7280; font-size: 14px; text-align: center; padding: 10px;">세부 세션 데이터가 없습니다.</div>' :
+                                    records.map(record => `
+                                        <div class="detail-item">
+                                            <div class="detail-time">
+                                                🕐 ${formatTime24(record.sessionTime)}
+                                            </div>
+                                            <div class="detail-angle">${Math.round(parseFloat(record.angle))}도</div>
+                                            <div class="detail-duration">${formatTime(record.durationSeconds)}</div>
+                                        </div>
+                                    `).join('')
+                                }
+                            </div>
+                        `;
+                        
+                        sessionRow.insertAdjacentHTML('beforeend', detailsHtml);
+                    }
+                } catch (error) {
+                    console.error('Error loading session details:', error);
+                }
+            }
+        }
+        
+        async function loadRecords() {
+            try {
+                const response = await fetch('/api/records/history');
+                
+                if (response.status === 401) {
+                    window.location.href = '/';
+                    return;
+                }
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch records');
+                }
+                
+                const sessions = await response.json();
+                
+                document.getElementById('loading').style.display = 'none';
+                
+                if (!sessions || sessions.length === 0) {
+                    document.getElementById('no-data').style.display = 'block';
+                    return;
+                }
+                
+                document.getElementById('records-content').style.display = 'block';
+                
+                const sessionsList = document.getElementById('sessions-list');
+                sessionsList.innerHTML = sessions.map(session => `
+                    <div class="session-row" data-session="${session.sessionDate}" onclick="toggleSession('${session.sessionDate}')">
+                        <div class="session-date">
+                            <svg class="expand-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                            ${formatDate(session.sessionDate)}
+                        </div>
+                        <div class="session-value angle">${Math.round(parseFloat(session.averageAngle))}도</div>
+                        <div class="session-value duration">${formatTime(session.totalDurationSeconds)}</div>
+                        <div class="session-value count">${session.sessionCount}회</div>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                console.error('Error loading records:', error);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error').style.display = 'block';
+            }
+        }
+        
+        // Load records when page loads
+        document.addEventListener('DOMContentLoaded', loadRecords);
+    </script>
+</body>
+</html>

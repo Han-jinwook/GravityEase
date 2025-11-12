@@ -1,0 +1,192 @@
+모바일 웹 기반 역경사각도기 PWA 개발
+
+프로젝트 개요:
+스마트폰의 자이로스코프 센서를 활용한 역경사 중력이완요법 측정 도구. 특정 각도(-3도~-15도)에서 1분 이상 유지 시 자동 기록하며, 한국어 음성 피드백을 제공하는 Progressive Web App.
+
+핵심 기능:
+
+실시간 각도 측정 및 기록 로직
+
+DeviceOrientationEvent API로 스마트폰 기울기 측정
+목표 범위: -3도~-15도 (역경사)
+측정 정밀도: 0.1도 단위
+기록 로직:
+각 각도별로 개별 타이머 시작
+해당 각도에서 연속 1분 이상 유지 시에만 기록
+각도 이탈 시 해당 각도 타이머 리셋
+동시에 여러 각도 측정 가능 (예: -5도 30초, -8도 45초)
+1분 달성한 각도만 데이터베이스에 저장
+상세 음성 피드백 (한국어)
+
+진입 시: "마이너스 [각도]도 측정을 시작합니다"
+유지 중: "좋습니다. [남은 시간]초 남았습니다" (30초, 10초 알림)
+완료 시: "마이너스 [각도]도에서 1분을 달성했습니다. 기록되었습니다"
+이탈 시: "각도가 벗어났습니다. 다시 조정해주세요"
+범위 외: "측정 범위가 아닙니다. 마이너스 3도에서 15도 사이로 조정하세요"
+Web Speech API 사용, 음성 속도/볼륨 조절 가능
+사용자 인증 시스템
+
+Google OAuth 2.0 (Google Cloud Console 설정)
+Kakao OAuth 2.0 (Kakao Developers 설정)
+세션 기반 인증 (express-session + connect-pg-simple)
+로그아웃 기능
+미인증 사용자는 측정만 가능, 기록 불가
+데이터베이스 설계
+
+-- 사용자 테이블
+CREATE TABLE users (
+    id VARCHAR PRIMARY KEY,
+    email VARCHAR UNIQUE,
+    name VARCHAR,
+    provider VARCHAR, -- 'google' or 'kakao'
+    profile_image_url VARCHAR,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+-- 측정 기록 테이블 (각도별 개별 기록)
+CREATE TABLE measurement_records (
+    id SERIAL PRIMARY KEY,
+    user_id VARCHAR REFERENCES users(id),
+    angle DECIMAL(4,1), -- 예: -5.3
+    duration_seconds INTEGER, -- 실제 유지 시간 (60초 이상)
+    session_date DATE,
+    session_time TIME,
+    device_info JSONB, -- 기기 정보
+    created_at TIMESTAMP DEFAULT NOW()
+);
+-- 사용자 설정 테이블
+CREATE TABLE user_settings (
+    user_id VARCHAR PRIMARY KEY REFERENCES users(id),
+    voice_feedback BOOLEAN DEFAULT true,
+    voice_volume DECIMAL(3,2) DEFAULT 0.8,
+    notifications BOOLEAN DEFAULT true,
+    alarm_time TIME DEFAULT '07:00',
+    target_angles JSONB DEFAULT '[-5, -10, -15]',
+    daily_goal_minutes INTEGER DEFAULT 60
+);
+-- 세션 테이블 (Passport.js용)
+CREATE TABLE sessions (
+    sid VARCHAR PRIMARY KEY,
+    sess JSONB NOT NULL,
+    expire TIMESTAMP NOT NULL
+);
+PWA 기능
+
+Service Worker (오프라인 지원)
+Web App Manifest (홈 화면 추가)
+Push Notifications (목표 달성 알림)
+Background Sync (네트워크 복구 시 데이터 동기화)
+통계 및 히스토리
+
+일별/주별/월별 통계
+각도별 누적 시간
+달성률 그래프
+연속 달성일 추적
+CSV 내보내기 기능
+기술 스택:
+
+백엔드: Node.js, Express.js
+프론트엔드: 순수 HTML5, CSS3, JavaScript (ES6+)
+데이터베이스: PostgreSQL
+인증: Passport.js (passport-google-oauth20, passport-kakao)
+세션: express-session + connect-pg-simple
+API: DeviceOrientationEvent, SpeechSynthesis, Notification, Service Worker
+UI/UX 상세 요구사항:
+
+메인 화면:
+실시간 각도 표시 (큰 숫자)
+목표 범위 시각적 인디케이터 (색상 구분)
+각도별 진행 바 (여러 각도 동시 표시)
+음성 On/Off 토글
+기록 화면: 달력 뷰, 리스트 뷰
+설정 화면: 목표각도, 알림시간, 음성설정
+통계 화면: 차트 및 성취도
+센서 권한 및 오류 처리:
+
+DeviceOrientationEvent 권한 요청
+iOS Safari 13+ 권한 처리
+센서 미지원 브라우저 안내
+HTTPS 필수 안내
+화면 회전 잠금 권장
+프로젝트 구조:
+
+/
+├── server/
+│   ├── index.js (Express 서버 시작)
+│   ├── config/
+│   │   ├── database.js (PostgreSQL 설정)
+│   │   └── passport.js (OAuth 설정)
+│   ├── routes/
+│   │   ├── api.js (측정 데이터 API)
+│   │   ├── auth.js (인증 라우트)
+│   │   └── user.js (사용자 설정)
+│   └── middleware/
+│       └── auth.js (인증 미들웨어)
+├── public/
+│   ├── index.html (메인 앱)
+│   ├── login.html (로그인 페이지)
+│   ├── js/
+│   │   ├── app.js (메인 로직)
+│   │   ├── sensor.js (센서 처리)
+│   │   ├── voice.js (음성 피드백)
+│   │   └── ui.js (UI 업데이트)
+│   ├── css/
+│   │   └── style.css (반응형 스타일)
+│   ├── manifest.json (PWA 설정)
+│   ├── sw.js (Service Worker)
+│   └── icons/ (PWA 아이콘들)
+├── migrations/ (DB 스키마)
+└── package.json
+구현 단계별 상세 계획:
+
+1단계: 기본 서버 구축
+
+Express 서버 + 정적 파일 서빙
+PostgreSQL 연결 설정
+기본 라우팅
+2단계: 센서 및 측정 로직
+
+DeviceOrientationEvent 구현
+각도 계산 및 검증
+개별 각도별 타이머 로직
+기록 조건 체크
+3단계: 음성 피드백
+
+Web Speech API 구현
+상황별 한국어 메시지
+음성 설정 저장
+4단계: 데이터베이스 CRUD
+
+측정 기록 저장/조회
+사용자 설정 관리
+통계 쿼리
+5단계: OAuth 인증
+
+Google OAuth 설정
+Kakao OAuth 설정
+세션 관리
+6단계: PWA 기능
+
+Service Worker
+Manifest 파일
+오프라인 지원
+7단계: UI/UX 완성
+
+반응형 디자인
+통계 페이지
+설정 페이지
+환경 변수:
+
+DATABASE_URL=postgresql://user:pass@host:port/dbname
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+KAKAO_CLIENT_ID=your_kakao_client_id
+KAKAO_CLIENT_SECRET=your_kakao_client_secret
+SESSION_SECRET=your_session_secret
+NODE_ENV=production
+배포 및 테스트:
+
+HTTPS 필수 (센서 API 요구사항)
+다양한 모바일 브라우저 테스트
+iOS Safari, Chrome Android 우선
+Lighthouse PWA 검사 통과

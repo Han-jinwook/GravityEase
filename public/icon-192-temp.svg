@@ -1,0 +1,35 @@
+<svg width="192" height="192" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2563eb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1d4ed8;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="192" height="192" rx="42" fill="url(#bg)"/>
+  
+  <!-- Angle measurement device -->
+  <!-- Base circle -->
+  <circle cx="96" cy="120" r="8" fill="white"/>
+  
+  <!-- Horizontal level line -->
+  <rect x="40" y="116" width="112" height="8" rx="4" fill="white"/>
+  
+  <!-- Angle indicator -->
+  <path d="M 96 120 L 96 70 L 130 100 Z" fill="white" opacity="0.9"/>
+  
+  <!-- Angle arc -->
+  <path d="M 96 95 A 25 25 0 0 1 121 120" stroke="white" stroke-width="3" fill="none" opacity="0.8"/>
+  
+  <!-- Angle text -->
+  <text x="110" y="85" fill="white" font-family="Arial, sans-serif" font-size="16" font-weight="bold">15°</text>
+  
+  <!-- Support legs -->
+  <rect x="50" y="135" width="6" height="25" rx="3" fill="white"/>
+  <rect x="136" y="135" width="6" height="25" rx="3" fill="white"/>
+  
+  <!-- Bubble level -->
+  <rect x="80" y="110" width="32" height="6" rx="3" fill="rgba(255,255,255,0.3)"/>
+  <circle cx="96" cy="113" r="2" fill="white"/>
+</svg>

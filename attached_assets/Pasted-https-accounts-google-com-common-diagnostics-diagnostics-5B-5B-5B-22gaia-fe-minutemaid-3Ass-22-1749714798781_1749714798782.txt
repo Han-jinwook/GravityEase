@@ -1,0 +1,46 @@
+https://accounts.google.com/_/common/diagnostics/?diagnostics=%5B%5B%5B%22gaia_fe_minutemaid%3Ass%22%2Cnull%2Cnull%2Cnull%2C1749714369159%5D%5D%5D&rt=j
+리퍼러 정책
+strict-origin-when-cross-origin
+:authority
+accounts.google.com
+:method
+GET
+:path
+/_/common/diagnostics/?diagnostics=%5B%5B%5B%22gaia_fe_minutemaid%3Ass%22%2Cnull%2Cnull%2Cnull%2C1749714369159%5D%5D%5D&rt=j
+:scheme
+https
+accept
+*/*
+accept-encoding
+gzip, deflate, br, zstd
+accept-language
+ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7
+cache-control
+max-age=0
+cookie
+SID=g.a000xwgHwxOktsq-0lRziKzRvNFK0UYSc5SEKZIy9UAZyc7rhQIIbrZO707dQXA6LhbbIEYl2AACgYKAV8SAQ8SFQHGX2MiDaFYRpZ5lxZl62mk97yfaxoVAUF8yKp05KLUTyaGfUFYZmPgMwbp0076; __Secure-1PSID=g.a000xwgHwxOktsq-0lRziKzRvNFK0UYSc5SEKZIy9UAZyc7rhQIIilon-71fR_N5HS_6ZjtrSQACgYKAcESAQ8SFQHGX2Mi2cYsKZkDIqv3WsUiTZaf9hoVAUF8yKp7XI7rNn1J4u8ygZO48NbC0076; __Secure-3PSID=g.a000xwgHwxOktsq-0lRziKzRvNFK0UYSc5SEKZIy9UAZyc7rhQII7diL0rPAiunMBMAUoCNH5wACgYKAcQSAQ8SFQHGX2MizmYrEZ_YPgfblfIHGpAHjRoVAUF8yKp_Nab2nfZo8tFSlA0QGTOy0076; HSID=AyNbPj22jdmNudEWT; SSID=AsnU9-xwQQfIcnNsZ; APISID=rygV1kpw98B9uURB/A8ZYEyCkx_WI9_QWN; SAPISID=LpvJ9ynKo2zvyBS2/Ay1VyCd7fyLtg4nxY; __Secure-1PAPISID=LpvJ9ynKo2zvyBS2/Ay1VyCd7fyLtg4nxY; __Secure-3PAPISID=LpvJ9ynKo2zvyBS2/Ay1VyCd7fyLtg4nxY; ACCOUNT_CHOOSER=AFx_qI7cur8qCihWx_S2K70ip-nhNo7gLtNn0Tx5BEDrbARLGIC8T4sy3XuGPtIt-zNGixh3h4RneI6Ydg6pFbH7fXHg8mBNLOp0N3R-_kBhqXLfbrOASQAr5le7BlpgFGiHQSTKlhhS; OTZ=8113346_20_20__20_; SEARCH_SAMESITE=CgQImZ4B; AEC=AVh_V2jF-Xxss-JdRVIFMsydSWhkgwtAv1UM6KUWb43iG2lMWUS1OfGqEA; LSID=o.drive.google.com|o.mail.google.com|s.KR|s.youtube:g.a000xwgHw14bv7Ull4DVv6w2S3NfMfMwPvHc48xf-t8gAFDfSn9fq68MGLe9UsjLB8uydwks3wACgYKAd0SAQ8SFQHGX2MiI7TPqmh-yDE4BS1TP2XjPRoVAUF8yKqjNPC3a0taf_04CDhTzcN60076; __Host-1PLSID=o.drive.google.com|o.mail.google.com|s.KR|s.youtube:g.a000xwgHw14bv7Ull4DVv6w2S3NfMfMwPvHc48xf-t8gAFDfSn9fzziOuBC_BlDmGd8rX7sbkQACgYKAXESAQ8SFQHGX2MiRo_7cKoIIw4yltEx68VRJxoVAUF8yKoLe0VPnEv6JPLeJp2uio6H0076; __Host-3PLSID=o.drive.google.com|o.mail.google.com|s.KR|s.youtube:g.a000xwgHw14bv7Ull4DVv6w2S3NfMfMwPvHc48xf-t8gAFDfSn9fYqb8xU-S7gQ4u-yk0diu-wACgYKAbESAQ8SFQHGX2MirzY9j_dkvhN8QJBXdCmRChoVAUF8yKqY3vbEXT0i9JVe2fM6xEv40076; __Host-GAPS=1:fIs4u10f-cm7s49Y_XFtmjM2R5lUJVXIjofcg6vBUcR3sHN4Gu5AX8HxM-xzngBYFUr1ldTaOIe5aiuXrT_HR9t8dwHY_w:0M_McJDWQcaVp1Mu; NID=524=TZhpPqQJodfDjnAW578emFfcONeoT5YxwhZsTZ391LKmnYroi8H2EzRACftYsl6r2yeKFSjE8VM5jT3GA8wrfeCkk1b2AQzBGKr24EeDAFWzX1qna_WRl4rBetvxRP-sdcG4f6xDBbeutx7OmNvWBRrbAB-u5jPAk5QMEbYqbtxX0jTeaVadnWV2-ufD9hI8M3xsEnwDiVgNlt0pKeo-0rQdPc_zS5zRMIVaR3T_DFm4RB7JmONDiOIvTJstIZgYQG3fuVt7WeFcwPHuht6A4ghCyjvFONE_1T_bRnkfsrMf_c5CGMQNwc3ThwS8N_WZ6w; __Secure-1PSIDTS=sidts-CjIB5H03P70YuiRHklsN36U64Stvybqh7L1SXFXL5OJhBpUl1sIujFoXF7SmWho67qxSZhAA; __Secure-3PSIDTS=sidts-CjIB5H03P70YuiRHklsN36U64Stvybqh7L1SXFXL5OJhBpUl1sIujFoXF7SmWho67qxSZhAA; SIDCC=AKEyXzXg-zcHazYRhRQi-VWlqtKrzaBNY4VDmbPuSzNNxJAT9JSUY6UdBuCIfOY3H6yx_Qql2g; __Secure-1PSIDCC=AKEyXzWmF5dU0o7RxGe67KrA-8V8QL-GlNc5TQdxEK4U81BI82FnhyPq9p0QUS_K8HJRx6nMGg; __Secure-3PSIDCC=AKEyXzWXGrGX1Vin29-s0bqJsAG5RNtZvDootQyMJ2FEzhXBuhKRTwgtGAqonIVXMvYPpYTuUA
+pragma
+no-cache
+priority
+u=4, i
+referer
+https://accounts.google.com/signin/oauth/error/v2?authError=Cg5pbnZhbGlkX2NsaWVudBIfVGhlIE9BdXRoIGNsaWVudCB3YXMgbm90IGZvdW5kLiCRAw%3D%3D&client_id=337204439058-l5iamhfbm6ku4s7dooljnehbgc5bm2ip.apps.google&flowName=GeneralOAuthFlow
+sec-fetch-dest
+empty
+sec-fetch-mode
+no-cors
+sec-fetch-site
+same-origin
+user-agent
+Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1
+x-chrome-id-consistency-request
+version=1,client_id=77185425430.apps.googleusercontent.com,device_id=fc0e64a0-5ba8-4127-953b-d6b9e6761c63,sync_account_id=110811815675048894842,signin_mode=all_accounts,signout_mode=show_confirmation
+x-client-data
+CIu2yQEIorbJAQipncoBCNTvygEIk6HLAQiRo8sBCIWgzQEIu+3OAQji8M4BCJHxzgEIpfLOARitqcoB
+디코딩됨:
+message ClientVariations {
+  // Active Google-visible variation IDs on this client. These are reported for analysis, but do not directly affect any server-side behavior.
+  repeated int32 variation_id = [3300107, 3300130, 3313321, 3323860, 3330195, 3330449, 3362821, 3389115, 3389538, 3389585, 3389733];
+  // Active Google-visible variation IDs on this client that trigger server-side behavior. These are reported for analysis *and* directly affect server-side behavior.
+  repeated int32 trigger_variation_id = [3314861];
+}

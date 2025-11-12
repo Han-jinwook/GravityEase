@@ -1,0 +1,32 @@
+<svg width="192" height="192" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background with rounded corners -->
+  <rect width="192" height="192" rx="42" fill="#2563eb"/>
+  
+  <!-- Protractor/angle meter -->
+  <g transform="translate(96,96)">
+    <!-- Outer semicircle -->
+    <path d="M -60 0 A 60 60 0 0 1 60 0" stroke="white" stroke-width="4" fill="none"/>
+    
+    <!-- Inner graduations -->
+    <g stroke="white" stroke-width="2" opacity="0.8">
+      <!-- Major lines at 30° intervals -->
+      <line x1="-52" y1="-30" x2="-45" y2="-26" />
+      <line x1="-30" y1="-52" x2="-26" y2="-45" />
+      <line x1="0" y1="-60" x2="0" y2="-50" />
+      <line x1="30" y1="-52" x2="26" y2="-45" />
+      <line x1="52" y1="-30" x2="45" y2="-26" />
+    </g>
+    
+    <!-- Center pivot -->
+    <circle cx="0" cy="0" r="6" fill="white"/>
+    
+    <!-- Angle indicator arm -->
+    <line x1="0" y1="0" x2="35" y2="-35" stroke="white" stroke-width="4" stroke-linecap="round"/>
+    
+    <!-- Angle measurement -->
+    <text x="20" y="-45" fill="white" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle">-15°</text>
+    
+    <!-- Base line -->
+    <line x1="-60" y1="0" x2="60" y2="0" stroke="white" stroke-width="3"/>
+  </g>
+</svg>
