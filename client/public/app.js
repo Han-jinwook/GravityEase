@@ -1095,31 +1095,55 @@
 
     // Event Listeners
     function initEventListeners() {
-        // Simple event handler
+        // Enhanced event handler for mobile compatibility
         function addEventHandler(element, handler) {
             if (!element) {
                 console.warn('Element not found for event listener');
                 return;
             }
             
+            // Add both click and touch events for mobile compatibility
             element.addEventListener('click', handler);
+            element.addEventListener('touchend', (e) => {
+                e.preventDefault(); // Prevent double-firing
+                handler(e);
+            });
+            
+            // Ensure button is focusable and clickable
+            element.style.cursor = 'pointer';
+            element.style.userSelect = 'none';
+            element.style.webkitUserSelect = 'none';
+            element.style.webkitTapHighlightColor = 'rgba(0,0,0,0.1)';
         }
 
         // Voice toggle
-        const handleVoiceToggle = () => {
+        const handleVoiceToggle = (e) => {
+            console.log('Voice toggle clicked!', e.type); // 디버깅용
+            
             AppState.isVoiceEnabled = !AppState.isVoiceEnabled;
             
             const toggle = elements.voiceToggle;
-            if (!toggle) return;
+            if (!toggle) {
+                console.warn('Voice toggle element not found');
+                return;
+            }
             
             const iconDiv = toggle.querySelector('div');
             const icon = iconDiv ? iconDiv.querySelector('svg') : null;
+            
+            console.log('Voice enabled:', AppState.isVoiceEnabled); // 디버깅용
             
             if (AppState.isVoiceEnabled) {
                 toggle.className = 'flex items-center space-x-2 p-2 rounded-lg bg-green-100 hover:bg-green-200 text-green-700 border border-green-300 transition-all duration-200';
                 if (iconDiv) iconDiv.className = 'w-6 h-6 bg-green-200 rounded-full flex items-center justify-center';
                 if (icon) icon.setAttribute('class', 'w-3 h-3 text-green-700');
-                VoiceManager.speak('음성 안내가 켜졌습니다');
+                
+                // 모바일에서 음성 테스트
+                try {
+                    VoiceManager.speak('음성 안내가 켜졌습니다');
+                } catch (error) {
+                    console.error('Voice error:', error);
+                }
             } else {
                 toggle.className = 'flex items-center space-x-2 p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-200 transition-all duration-200';
                 if (iconDiv) iconDiv.className = 'w-6 h-6 bg-gray-200 rounded-full flex items-center justify-center';
@@ -1130,15 +1154,27 @@
         addEventHandler(elements.voiceToggle, handleVoiceToggle);
 
         // Start/Pause buttons
-        const handleStartTherapy = () => {
+        const handleStartTherapy = (e) => {
+            console.log('Start therapy clicked!', e.type); // 디버깅용
+            console.log('Current measuring state:', AppState.isMeasuring);
+            
             if (!AppState.isMeasuring) {
+                console.log('Starting therapy...');
                 startTherapy();
+            } else {
+                console.log('Already measuring, ignoring click');
             }
         };
         
-        const handleStopTherapy = async () => {
+        const handleStopTherapy = async (e) => {
+            console.log('Stop therapy clicked!', e.type); // 디버깅용
+            console.log('Current measuring state:', AppState.isMeasuring);
+            
             if (AppState.isMeasuring) {
+                console.log('Stopping therapy...');
                 await stopTherapy();
+            } else {
+                console.log('Not measuring, ignoring click');
             }
         };
         
