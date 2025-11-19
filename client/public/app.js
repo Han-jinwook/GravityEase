@@ -717,7 +717,7 @@
                         // 이전 세션이 있었다면 기록 처리
                         if (AppState.currentSessionAngle && AppState.currentSessionStartTime) {
                             const prevDuration = now - AppState.currentSessionStartTime;
-                            if (prevDuration >= 60000) {
+                            if (prevDuration >= 10000) {
                                 this.completeCurrentSession(AppState.currentSessionAngle, prevDuration);
                             }
                         }
@@ -763,7 +763,7 @@
                         // 이전 세션이 있었다면 기록 처리
                         if (AppState.currentSessionAngle && AppState.currentSessionStartTime) {
                             const prevDuration = now - AppState.currentSessionStartTime;
-                            if (prevDuration >= 60000) {
+                            if (prevDuration >= 10000) {
                                 this.completeCurrentSession(AppState.currentSessionAngle, prevDuration);
                             }
                         }
@@ -782,8 +782,8 @@
                     AppState.isInTherapyRange = false;
                     if (AppState.currentSessionAngle && AppState.currentSessionStartTime) {
                         const duration = now - AppState.currentSessionStartTime;
-                        // 1분 이상인 경우에만 기록
-                        if (duration >= 60000) {
+                        // 10초 이상인 경우에만 기록
+                        if (duration >= 10000) {
                             this.completeCurrentSession(AppState.currentSessionAngle, duration);
                         }
                         // 세션 초기화
@@ -1197,7 +1197,7 @@
         
 
         
-        // Navigation - History button
+        // Navigation - History button (모달 방식으로 변경)
         const navHistoryBtn = document.getElementById('navHistory');
         console.log('navHistoryBtn element:', navHistoryBtn);
         if (navHistoryBtn) {
@@ -1205,13 +1205,105 @@
                 console.log('History button clicked');
                 e.preventDefault();
                 e.stopPropagation();
-                window.location.href = '/records.html';
+                showHistoryModal();
             });
         } else {
             console.error('navHistory button not found');
         }
 
 
+    }
+
+    // 기록 모달 표시 함수
+    function showHistoryModal() {
+        const modal = document.createElement('div');
+        modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50';
+        modal.innerHTML = `
+            <div class="bg-white rounded-2xl p-6 max-w-md w-full max-h-96 overflow-y-auto">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold text-gray-900">세션 기록</h3>
+                    <button onclick="this.closest('.fixed').remove()" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div id="historyContent" class="space-y-3">
+                    <div class="text-center text-gray-500">로딩 중...</div>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        // 기록 데이터 로드
+        loadHistoryData();
+    }
+
+    // 기록 데이터 로드 함수
+    async function loadHistoryData() {
+        const historyContent = document.getElementById('historyContent');
+        if (!historyContent) return;
+        
+        try {
+            // localStorage에서 세션 데이터 가져오기
+            const sessions = JSON.parse(localStorage.getItem('gravityease_sessions') || '[]');
+            
+            if (sessions.length === 0) {
+                historyContent.innerHTML = '<div class="text-center text-gray-500 py-4">아직 기록된 세션이 없습니다</div>';
+                return;
+            }
+            
+            // 날짜별로 그룹화
+            const groupedSessions = {};
+            sessions.forEach(session => {
+                const date = session.sessionDate || new Date().toISOString().split('T')[0];
+                if (!groupedSessions[date]) {
+                    groupedSessions[date] = [];
+                }
+                groupedSessions[date].push(session);
+            });
+            
+            // HTML 생성
+            let html = '';
+            Object.keys(groupedSessions).sort().reverse().forEach(date => {
+                const dateObj = new Date(date + 'T00:00:00');
+                const formattedDate = dateObj.toLocaleDateString('ko-KR', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric',
+                    weekday: 'short'
+                });
+                
+                html += `<div class="border-b border-gray-200 pb-3 mb-3">`;
+                html += `<h4 class="font-medium text-gray-900 mb-2">${formattedDate}</h4>`;
+                
+                groupedSessions[date].forEach(session => {
+                    const time = session.sessionTime || '00:00';
+                    const angle = Math.abs(session.angle || 0);
+                    const duration = session.durationSeconds || 0;
+                    const minutes = Math.floor(duration / 60);
+                    const seconds = duration % 60;
+                    const durationText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    
+                    html += `
+                        <div class="flex justify-between items-center py-2 px-3 bg-gray-50 rounded-lg mb-2">
+                            <span class="text-sm text-gray-600">${time}</span>
+                            <span class="font-medium text-gray-900">-${angle}도</span>
+                            <span class="font-medium text-gray-900">${durationText}</span>
+                        </div>
+                    `;
+                });
+                
+                html += `</div>`;
+            });
+            
+            historyContent.innerHTML = html;
+            
+        } catch (error) {
+            console.error('기록 로드 실패:', error);
+            historyContent.innerHTML = '<div class="text-center text-red-500 py-4">기록을 불러오는데 실패했습니다</div>';
+        }
     }
 
     function startTherapy() {
@@ -1222,12 +1314,29 @@
             console.log('Requesting sensor permission first');
             SensorManager.requestPermission().then(() => {
                 if (AppState.sensorSupported) {
+                    console.log('Sensor permission granted, starting therapy');
                     TherapyManager.start();
                     updateButtonStates();
                 } else {
-                    console.log('Sensor permission denied, cannot start therapy');
+                    console.log('Sensor permission denied, showing permission modal');
+                    SensorManager.showPermissionModal();
                 }
+            }).catch(error => {
+                console.error('Permission request error:', error);
+                SensorManager.showPermissionModal();
             });
+        } else if (!AppState.sensorSupported) {
+            console.log('Sensor not supported, trying to initialize');
+            SensorManager.init();
+            // 잠시 후 다시 시도
+            setTimeout(() => {
+                if (AppState.sensorSupported) {
+                    TherapyManager.start();
+                    updateButtonStates();
+                } else {
+                    alert('센서를 사용할 수 없습니다. 기기를 확인해주세요.');
+                }
+            }, 1000);
         } else {
             console.log('Starting therapy directly');
             TherapyManager.start();
