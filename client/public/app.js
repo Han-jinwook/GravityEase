@@ -575,6 +575,22 @@
         },
 
         async stop() {
+            const now = Date.now();
+            
+            // 수동 종료 시 진행 중인 세션이 있으면 정리 (10초 이상이면 기록, 아니면 초기화)
+            if (AppState.currentSessionAngle && AppState.currentSessionStartTime) {
+                const duration = now - AppState.currentSessionStartTime;
+                if (duration >= 10000) {
+                    this.completeCurrentSession(AppState.currentSessionAngle, duration);
+                } else {
+                    AppState.currentSessionAngle = null;
+                    AppState.currentSessionStartTime = null;
+                    AppState.currentTherapyAngle = null;
+                    AppState.therapyStartTime = null;
+                    AppState.sessionCompleted = false;
+                }
+            }
+
             AppState.phase = 'ready';
             AppState.isMeasuring = false;
             AppState.horizontalStartTime = null;
