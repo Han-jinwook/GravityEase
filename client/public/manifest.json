@@ -1,0 +1,49 @@
+{
+  "name": "역경사각도기 - 중력이완요법 측정 도구",
+  "short_name": "역경사각도기",
+  "description": "스마트폰의 자이로스코프 센서를 활용한 중력이완요법 측정 PWA",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#2563EB",
+  "background_color": "#F9FAFB",
+  "orientation": "portrait-primary",
+  "categories": ["health", "medical", "utilities"],
+  "lang": "ko",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png", 
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjU2OCIgdmlld0JveD0iMCAwIDMyMCA1NjgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMjAiIGhlaWdodD0iNTY4IiBmaWxsPSIjRjlGQUZCIi8+CjxyZWN0IHg9IjE2IiB5PSIxNiIgd2lkdGg9IjI4OCIgaGVpZ2h0PSI2NCIgcng9IjgiIGZpbGw9IndoaXRlIi8+Cjx0ZXh0IHg9IjMyIiB5PSI0NCIgZmlsbD0iIzExMTgyNyIgZm9udC1zaXplPSIxOCIgZm9udC13ZWlnaHQ9ImJvbGQiPuyXreayvOyCrOqwgeqhsOq4sOaciDwvdGV4dD4KPHJlY3QgeD0iMTYiIHk9Ijk2IiB3aWR0aD0iMjg4IiBoZWlnaHQ9IjEyOCIgcng9IjE2IiBmaWxsPSJ3aGl0ZSIvPgo8dGV4dCB4PSIxNjAiIHk9IjE0NCIgZmlsbD0iIzI1NjNFQiIgZm9udC1zaXplPSI0OCIgZm9udC13ZWlnaHQ9IjkwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+LTguNcKwPC90ZXh0Pgo8L3N2Zz4=",
+      "sizes": "320x568",
+      "type": "image/svg+xml",
+      "form_factor": "narrow"
+    }
+  ],
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "측정 시작",
+      "short_name": "측정",
+      "description": "즉시 각도 측정을 시작합니다",
+      "url": "/?action=start",
+      "icons": [
+        {
+          "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOTYiIGhlaWdodD0iOTYiIHZpZXdCb3g9IjAgMCA5NiA5NiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iNDgiIGN5PSI0OCIgcj0iNDgiIGZpbGw9IiMyNTYzRUIiLz4KPHA+CjxwYXRoIGQ9Ik0zNiAzMkw2MCA0OEwzNiA2NFYzMloiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPg==",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
+}
